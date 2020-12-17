@@ -1,0 +1,6 @@
+framework module Pods_PhotoAlbumsTests {
+  umbrella header "Pods-PhotoAlbumsTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
