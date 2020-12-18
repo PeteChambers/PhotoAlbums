@@ -8,8 +8,37 @@
 import Foundation
 import UIKit
 
-struct PhotoListViewModel {
-    let photos: [Photo]
+protocol PhotoListViewDelegate {
+    func showPhotos()
+    func failure(message : String)
+}
+
+class PhotoListViewModel {
+    var photos: [Photo]
+    let webService : WebService
+    var delegate : PhotoListViewDelegate?
+    
+    init() {
+        photos = []
+        webService = WebService()
+    }
+}
+
+//MARK: GET PHOTOS
+extension PhotoListViewModel {
+    /// get albums..
+    func getPhotos(albumId: Int) {
+        
+        webService.getPhotos(albumId: albumId) { result in
+            switch result {
+            case .success(let photos):
+                self.photos = photos
+                self.delegate?.showPhotos()
+            case .failure(let error):
+                self.delegate?.failure(message: error.localizedDescription)
+            }
+        }
+    }
 }
 
 extension PhotoListViewModel {

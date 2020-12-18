@@ -12,7 +12,7 @@ import AlamofireImage
 
 class PhotosCollectionViewController: UICollectionViewController {
     
-    private var photoListVM: PhotoListViewModel!
+    private var photoListVM = PhotoListViewModel()
     var albumId: Int?
     var selectedIndexPath: IndexPath!
     let numberOfItemsPerRow: CGFloat = 3.0
@@ -26,19 +26,14 @@ class PhotosCollectionViewController: UICollectionViewController {
     }
     
     private func setup() {
-        WebService().getPhotos(albumId: albumId!) { (photos) in
-            self.photoListVM = PhotoListViewModel(photos: photos)
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        } error: { (error) in
-            debugPrint(error.localizedDescription)
+        photoListVM.delegate = self
+        if let albumId = albumId {
+            photoListVM.getPhotos(albumId: albumId)
         }
-
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return photoListVM == nil ? 0 : self.photoListVM.numberOfSections
+        return self.photoListVM.numberOfSections
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -49,6 +44,9 @@ class PhotosCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         cell.photoImageView.image = UIImage(named: "placeholder")
         let photoVM = self.photoListVM.photoAtIndex(indexPath.row)
+    
+
+        
         cell.configureCell(for: photoVM)
         return cell
     }
@@ -57,21 +55,21 @@ class PhotosCollectionViewController: UICollectionViewController {
     {
 
         let photoVM = self.photoListVM.photoAtIndex(indexPath.row)
-
         let imageUrl = URL(string: photoVM.fullSizeImage)!
 
-        let imageData = try! Data(contentsOf: imageUrl)
-
-        let image = UIImage(data: imageData)
         self.selectedIndexPath = indexPath
-        self.performSegue(withIdentifier: "ShowDetail", sender: image)
+        
+        self.performSegue(withIdentifier: "ShowDetail", sender: imageUrl)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segue.identifier == "ShowDetail" {
             let detailVC = segue.destination as! PhotoDetailViewController
-            detailVC.image = sender as? UIImage
+            let imageData = try! Data(contentsOf: sender as! URL)
+            let image = UIImage(data: imageData)
+            
+            detailVC.image = image
         }
     }
     
@@ -82,19 +80,33 @@ class PhotosCollectionViewController: UICollectionViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return 1
+    }
+    
+    func createAlert(title: String, message: String, completion: ((UIAlertAction) -> Void)? = nil) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: completion))
+        self.present(alert, animated: true, completion: nil)
     }
 
 }
 
 extension PhotosCollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = collectionView.frame.width / numberOfItemsPerRow
+        
+        let spacingBetweenCells: CGFloat = 1
+        
+        let totalSpacing = (2 * spacingBetweenCells) + ((numberOfItemsPerRow - 1) * spacingBetweenCells)
+        
+        let size = (collectionView.bounds.width - totalSpacing)/numberOfItemsPerRow
         return CGSize(width: size, height: size)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -115,6 +127,20 @@ extension PhotosCollectionViewController : ZoomingViewController
         }
         
         return nil
+    }
+}
+
+extension PhotosCollectionViewController : PhotoListViewDelegate {
+    func showPhotos() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func failure(message: String) {
+        DispatchQueue.main.async {
+            self.createAlert(title: "", message: message)
+        }
     }
 }
 

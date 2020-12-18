@@ -8,8 +8,52 @@
 import Foundation
 import UIKit
 
-struct AlbumListViewModel {
-    let albums: [Album]
+protocol AlbumListViewDelegate {
+    func showAlbums()
+    func failure(message : String)
+}
+
+class AlbumListViewModel {
+    var albums: [Album]
+    let webService : WebService
+    var delegate : AlbumListViewDelegate?
+    
+    init() {
+        albums = []
+        webService = WebService()
+    }
+}
+
+//MARK: GET ALBUMS & SEARCH ALBUMS
+extension AlbumListViewModel {
+    /// get albums..
+    func getAlbums() {
+        webService.getAlbums { result in
+            switch result {
+            case .success(let albums):
+                self.albums = albums
+                self.delegate?.showAlbums()
+            case .failure(let error):
+            self.delegate?.failure(message: error.localizedDescription)
+  
+            }
+        }
+
+    }
+    
+    /// search album
+    func searchAlbum(text : String) {
+        
+        webService.searchAlbums(searchText: text) { result in
+            switch result {
+            case .success(let albums):
+                self.albums = albums
+                self.delegate?.showAlbums()
+            case .failure(let error):
+                self.delegate?.failure(message: error.localizedDescription)
+            }
+        }
+    }
 }
 
 extension AlbumListViewModel {
@@ -40,7 +84,7 @@ extension AlbumViewModel {
 
 extension AlbumViewModel {
     var title: String {
-        return album.title
+        return album.title.capitalized
     }
     var id: Int {
         return album.id

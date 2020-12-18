@@ -12,7 +12,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
     
     @IBOutlet weak var toggleAppearance: UISwitch!
     
-    private var albumListVM: AlbumListViewModel!
+    private var albumListVM = AlbumListViewModel()
     
     var currentSearchText: String = ""
     
@@ -23,31 +23,36 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
         self.navigationController?.navigationBar.prefersLargeTitles = true
         collectionView.delegate = self
         collectionView.dataSource = self
-        toggleAppearance.onTintColor = UIColor.black
-        toggleAppearance.thumbTintColor = UIColor.white
+        setupAppearance()
         setup()
         
     }
+
     
     private func setup() {
-        WebService().getAlbums { (albums) in
-            self.albumListVM = AlbumListViewModel(albums: albums)
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-        } error: { (error) in
-            debugPrint(error.localizedDescription)
-        }
+        albumListVM.delegate = self
+        albumListVM.getAlbums()
     }
     
+    
+    private func setupAppearance() {
+        if self.traitCollection.userInterfaceStyle == .dark {
+            toggleAppearance.onTintColor = UIColor.white
+            toggleAppearance.thumbTintColor = UIColor.white
+        } else {
+            toggleAppearance.onTintColor = UIColor.black
+            toggleAppearance.thumbTintColor = UIColor.white
+        }
+    }
+ 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return albumListVM == nil ? 0 : self.albumListVM.numberOfSections
+        return self.albumListVM.numberOfSections
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if albumListVM.numberOfItemsInSection(section) == 0 {
-            self.collectionView.setEmptyMessage("No Results\n\nThere were no results for '\(currentSearchText)'.  Only exact matches will be found")
+            self.collectionView.setEmptyMessage(boldText: "No Results", normalText: "\n\nThere were no results for '\(currentSearchText)'.  Only exact matches will be found")
         } else {
             self.collectionView.restore()
         }
@@ -78,14 +83,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else { return }
         currentSearchText = text
-            WebService().searchAlbums(searchText: text) { (albums) in
-                self.albumListVM = AlbumListViewModel(albums: albums)
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            } error: { (error) in
-                self.createAlert(title: "Error", message: "No Albums Found")
-            }
+        albumListVM.searchAlbum(text: text)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -105,9 +103,14 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
     
     
     @IBAction func toggleAppearance(_ sender: Any) {
-        UIView.transition (with: self.view, duration: 0.5, options: .transitionFlipFromBottom, animations: {
-            self.navigationController?.overrideUserInterfaceStyle = self.toggleAppearance.isOn ? .light : .dark
+        UIView.transition (with: self.view, duration: 0.8, options: .transitionCrossDissolve, animations: {
+            if self.traitCollection.userInterfaceStyle == .dark {
+                self.navigationController?.overrideUserInterfaceStyle = .light
+            } else {
+                self.navigationController?.overrideUserInterfaceStyle = .dark
+            }
         }, completion: nil)
+        setupAppearance()
     }
 }
 
@@ -132,17 +135,17 @@ extension AlbumsCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension UICollectionView {
-
-    func setEmptyMessage(_ message: String) {
-        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width - 40, height: self.bounds.size.height))
-        messageLabel.text = message
-        messageLabel.numberOfLines = 0;
-        messageLabel.textAlignment = .center;
-        self.backgroundView = messageLabel;
+extension AlbumsCollectionViewController : AlbumListViewDelegate {
+    func showAlbums() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
-
-    func restore() {
-        self.backgroundView = nil
+    
+    func failure(message: String) {
+        DispatchQueue.main.async {
+            self.createAlert(title: "", message: message)
+        }
     }
 }
+

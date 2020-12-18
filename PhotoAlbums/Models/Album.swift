@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-struct Album: Codable {
+struct Album: Codable, Equatable {
     let userId, id: Int
     let title: String
 
