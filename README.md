@@ -30,9 +30,9 @@ The user interface is made up of 3 viewcontrollers:
 
 #### AlbumsCollectionViewController
 
-- Album titles from JSONPlaceholder are loaded into the collectionview and are displayed in cells with randomly generated colour gradients
+- Album titles from JSONPlaceholder are loaded into the collection view and are displayed in cells with randomly generated colour gradients
 
-- The search bar can be used to filter the list of albums by title.
+- The search bar at the top of the view can be used to filter the list of albums by title.
 
 - A successful search will return an album with an exact matching title.
 
