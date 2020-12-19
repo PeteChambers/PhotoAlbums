@@ -11,16 +11,21 @@ import AlamofireImage
 
 class PhotoDetailViewController: UIViewController {
     
+    // MARK: IBOutlets
+    
     @IBOutlet weak var photoImageView: UIImageView!
     
+    // MARK: Properties
+    
     var image: UIImage!
+    
+    // MARK: Lifecycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         photoImageView.image = image
     }
-
-
+    
 }
 
 extension PhotoDetailViewController : ZoomingViewController {

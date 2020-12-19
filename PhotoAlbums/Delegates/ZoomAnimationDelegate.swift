@@ -7,6 +7,8 @@
 
 import UIKit
 
+//MARK: ZoomingViewController Protocol
+
 @objc
 protocol ZoomingViewController
 {
@@ -19,8 +21,9 @@ enum TransitionState {
     case final
 }
 
-class ZoomTransitioningDelegate: NSObject
-{
+//MARK: ZoomTransitioningDelegate
+
+class ZoomTransitioningDelegate: NSObject {
     var transitionDuration = 0.5
     var operation: UINavigationController.Operation = .none
     private let zoomScale = CGFloat(15)
@@ -28,8 +31,7 @@ class ZoomTransitioningDelegate: NSObject
     
     typealias ZoomingViews = (otherView: UIView, imageView: UIView)
     
-    func configureViews(for state: TransitionState, containerView: UIView, backgroundViewController: UIViewController, viewsInBackground: ZoomingViews, viewsInForeground: ZoomingViews, snapshotViews: ZoomingViews)
-    {
+    func configureViews(for state: TransitionState, containerView: UIView, backgroundViewController: UIViewController, viewsInBackground: ZoomingViews, viewsInForeground: ZoomingViews, snapshotViews: ZoomingViews) {
         switch state {
         case .initial:
             backgroundViewController.view.transform = CGAffineTransform.identity
@@ -46,14 +48,12 @@ class ZoomTransitioningDelegate: NSObject
     }
 }
 
-extension ZoomTransitioningDelegate : UIViewControllerAnimatedTransitioning
-{
+extension ZoomTransitioningDelegate : UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return transitionDuration
     }
     
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning)
-    {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let duration = transitionDuration(using: transitionContext)
         let fromViewController = transitionContext.viewController(forKey: .from)!
         let toViewController = transitionContext.viewController(forKey: .to)!
@@ -69,9 +69,6 @@ extension ZoomTransitioningDelegate : UIViewControllerAnimatedTransitioning
         
         let maybeBackgroundImageView = (backgroundViewController as? ZoomingViewController)?.zoomingImageView(for: self)
         let maybeForegroundImageView = (foregroundViewController as? ZoomingViewController)?.zoomingImageView(for: self)
-        
-        assert(maybeBackgroundImageView != nil, "Cannot find imageView in backgroundVC")
-        assert(maybeForegroundImageView != nil, "Cannot find imageView in foregroundVC")
 
         let backgroundImageView = maybeBackgroundImageView!
         let foregroundImageView = maybeForegroundImageView!
@@ -121,8 +118,7 @@ extension ZoomTransitioningDelegate : UIViewControllerAnimatedTransitioning
     }
 }
 
-extension ZoomTransitioningDelegate : UINavigationControllerDelegate
-{
+extension ZoomTransitioningDelegate : UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if fromVC is ZoomingViewController && toVC is ZoomingViewController {
             self.operation = operation

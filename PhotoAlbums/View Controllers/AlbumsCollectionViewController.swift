@@ -10,41 +10,37 @@ import UIKit
 
 class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDelegate {
     
+    // MARK: IBOutlets
+    
     @IBOutlet weak var toggleAppearance: UISwitch!
     
+    // MARK: Properties
+    
     private var albumListVM = AlbumListViewModel()
-    
     var currentSearchText: String = ""
-    
     let numberOfItemsPerRow: CGFloat = 2.0
+    
+    // MARK: Lifecycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.prefersLargeTitles = true
         collectionView.delegate = self
         collectionView.dataSource = self
-        setupAppearance()
+        toggleAppearance.onTintColor = .black
         setup()
-        
     }
-
+    
+    // assign delegate and get albums
     
     private func setup() {
         albumListVM.delegate = self
+        // get albums
         albumListVM.getAlbums()
     }
     
+    // MARK: CollectionView Methods
     
-    private func setupAppearance() {
-        if self.traitCollection.userInterfaceStyle == .dark {
-            toggleAppearance.onTintColor = UIColor.white
-            toggleAppearance.thumbTintColor = UIColor.white
-        } else {
-            toggleAppearance.onTintColor = UIColor.black
-            toggleAppearance.thumbTintColor = UIColor.white
-        }
-    }
- 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return self.albumListVM.numberOfSections
     }
@@ -52,7 +48,7 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if albumListVM.numberOfItemsInSection(section) == 0 {
-            self.collectionView.setEmptyMessage(boldText: "No Results", normalText: "\n\nThere were no results for '\(currentSearchText)'.  Only exact matches will be found")
+            self.collectionView.setEmptyMessage(boldText: "No Results", normalText: "\n\nNo album with title '\(currentSearchText)' found.  Try a new search")
         } else {
             self.collectionView.restore()
         }
@@ -77,7 +73,20 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
         let searchView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SearchBar", for: indexPath) as! SearchBarView
         searchView.albumCountLabel.text = albumListVM.numberOfItemsInSection(0) == 1 ? "\(albumListVM.numberOfItemsInSection(0)) album" : "\(albumListVM.numberOfItemsInSection(0)) albums"
         searchView.searchBar.autocapitalizationType = .none
+        searchView.searchBar.placeholder = "search by album title..."
         return searchView
+    }
+    
+    // MARK: Actioms
+    
+    @IBAction func toggleAppearance(_ sender: Any) {
+        UIView.transition (with: self.view, duration: 0.8, options: .transitionCrossDissolve, animations: {
+            if self.traitCollection.userInterfaceStyle == .dark {
+                self.navigationController?.overrideUserInterfaceStyle = .light
+            } else {
+                self.navigationController?.overrideUserInterfaceStyle = .dark
+            }
+        }, completion: nil)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -94,23 +103,9 @@ class AlbumsCollectionViewController: UICollectionViewController, UISearchBarDel
     }
     
     func createAlert(title: String, message: String, completion: ((UIAlertAction) -> Void)? = nil) {
-        
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: completion))
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    
-    @IBAction func toggleAppearance(_ sender: Any) {
-        UIView.transition (with: self.view, duration: 0.8, options: .transitionCrossDissolve, animations: {
-            if self.traitCollection.userInterfaceStyle == .dark {
-                self.navigationController?.overrideUserInterfaceStyle = .light
-            } else {
-                self.navigationController?.overrideUserInterfaceStyle = .dark
-            }
-        }, completion: nil)
-        setupAppearance()
     }
 }
 
@@ -134,6 +129,8 @@ extension AlbumsCollectionViewController: UICollectionViewDelegateFlowLayout {
         return 30
     }
 }
+
+// AlbumListViewDelegate implementation
 
 extension AlbumsCollectionViewController : AlbumListViewDelegate {
     func showAlbums() {

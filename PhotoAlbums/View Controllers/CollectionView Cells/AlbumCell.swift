@@ -7,11 +7,14 @@
 
 import UIKit
 
-class AlbumCell: UICollectionViewCell
-{
+class AlbumCell: UICollectionViewCell {
+    
+    // MARK: IBOutlets
     
     @IBOutlet weak var albumTitle: UILabel!
     @IBOutlet weak var albumImageView: UIImageView!
+    
+    // Cell configure method
     
     func configureCell(for album: AlbumViewModel) {
         
@@ -23,12 +26,18 @@ class AlbumCell: UICollectionViewCell
         albumImageView.tintColor = .white
         
         setCellShadow()
-        
         roundCorner()
         gradientBackgroundColor()
         
         self.layoutIfNeeded()
 
+    }
+    
+    func roundCorner() {
+        self.layer.cornerRadius = 12.0
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = 1.0
+        self.layer.borderColor = UIColor.clear.cgColor
     }
     
     func setCellShadow() {
@@ -40,6 +49,8 @@ class AlbumCell: UICollectionViewCell
             self.layer.cornerRadius = 3
             self.clipsToBounds = false
         }
+    
+    // create and set random color gradients for cells
     
     func cellRandomBackgroundColors() -> [UIColor] {
             //Colors
@@ -76,11 +87,5 @@ class AlbumCell: UICollectionViewCell
         func gradientBackgroundColor() {
             let colors = cellRandomBackgroundColors()
             self.setGradientBackgroundColor(colorOne: colors[0], colorTow: colors[1])
-        }
-        func roundCorner() {
-            self.layer.cornerRadius = 12.0
-            self.layer.masksToBounds = true
-            self.layer.borderWidth = 1.0
-            self.layer.borderColor = UIColor.clear.cgColor
         }
 }

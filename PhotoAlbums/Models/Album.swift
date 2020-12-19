@@ -11,7 +11,6 @@ import Alamofire
 struct Album: Codable, Equatable {
     let userId, id: Int
     let title: String
-
 }
 
 typealias Albums = [Album]

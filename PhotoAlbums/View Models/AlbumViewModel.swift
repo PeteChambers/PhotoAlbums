@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+//MARK: AlbumListViewDelegate
+
 protocol AlbumListViewDelegate {
     func showAlbums()
     func failure(message : String)
@@ -24,9 +26,10 @@ class AlbumListViewModel {
     }
 }
 
-//MARK: GET ALBUMS & SEARCH ALBUMS
+//MARK: Get ALbums & Search Albums
+
 extension AlbumListViewModel {
-    /// get albums..
+    // get albums
     func getAlbums() {
         webService.getAlbums { result in
             switch result {
@@ -38,12 +41,10 @@ extension AlbumListViewModel {
   
             }
         }
-
     }
     
-    /// search album
+    // search album
     func searchAlbum(text : String) {
-        
         webService.searchAlbums(searchText: text) { result in
             switch result {
             case .success(let albums):

@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+//MARK: PhotoListViewDelegate
+
 protocol PhotoListViewDelegate {
     func showPhotos()
     func failure(message : String)
@@ -24,11 +26,10 @@ class PhotoListViewModel {
     }
 }
 
-//MARK: GET PHOTOS
+//MARK: Get Photos
 extension PhotoListViewModel {
-    /// get albums..
+    // get photos
     func getPhotos(albumId: Int) {
-        
         webService.getPhotos(albumId: albumId) { result in
             switch result {
             case .success(let photos):

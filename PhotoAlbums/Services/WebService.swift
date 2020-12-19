@@ -43,6 +43,8 @@ class WebService {
         }
     }
     
+    // MARK: Get Albums
+    
     func getAlbums(completion: @escaping ((Result<Albums,Error>) -> Void)) {
         
         
@@ -52,6 +54,8 @@ class WebService {
         callURL(url: url, method: .get, encoding: JSONEncoding.default, httpHeaders: httpHeaders, parameters: nil, completion: completion)
     }
     
+    // MARK: Search Albums
+    
     func searchAlbums(searchText: String, completion: @escaping ((Result<Albums,Error>) -> Void)) {
         
         guard let url = URL.searchAlbumsURL(searchText: searchText) else { return }
@@ -59,6 +63,8 @@ class WebService {
         
         callURL(url: url, method: .get, encoding: JSONEncoding.default, httpHeaders: httpHeaders, parameters: nil, completion: completion)
     }
+    
+    // MARK: Get Albums
     
     func getPhotos(albumId: Int, completion: @escaping ((Result<Photos,Error>) -> Void)) {
         

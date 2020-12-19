@@ -10,8 +10,9 @@ import UIKit
 
 class SearchBarView: UICollectionReusableView {
     
+    // MARK: IBOutlets
+    
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var albumCountLabel: UILabel!
-    
     
 }

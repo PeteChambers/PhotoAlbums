@@ -9,9 +9,13 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
-class PhotoCell: UICollectionViewCell
-{
+class PhotoCell: UICollectionViewCell {
+    
+    // MARK: IBOutlets
+    
     @IBOutlet weak var photoImageView: UIImageView!
+    
+    // Cell configure method
     
     func configureCell(for photo: PhotoViewModel) {
 

@@ -113,7 +113,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Albums" id="AWx-Lj-Z2g">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="jPM-mw-qhm">
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="jPM-mw-qhm">
                             <switch key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="CZq-Zi-4TN">
                                 <rect key="frame" x="343" y="6.5" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

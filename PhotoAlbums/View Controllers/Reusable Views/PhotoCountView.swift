@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class PhotoCountView: UICollectionReusableView {
+    
+    // MARK: IBOutlets
 
     @IBOutlet weak var photoCountLabel: UILabel!
     
