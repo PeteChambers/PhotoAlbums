@@ -50,10 +50,10 @@ The user interface is made up of 3 viewcontrollers:
 
 - Tapping on the button at the top left takes you back to the AlbumsCollectionViewController
 
-- Tapping on any of the images sets of a transtion animation that results in the display of the PhotoDetailViewController.
+- Tapping on any of the images sets off a transtion animation that results in the display of the PhotoDetailViewController.
 
 #### PhotoDetailViewController
 
-- The image that was tapped on in the previous screen is now displayed in full screen and used the higher resolution image from JSONPlaceholder.
+- The image that was tapped on in the previous screen is now displayed in full screen and uses the higher resolution image from JSONPlaceholder.
 
 - Tapping on the button at the top left takes you back to the PhotosCollectionViewController.
