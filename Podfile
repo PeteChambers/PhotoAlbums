@@ -7,9 +7,6 @@ target 'PhotoAlbums' do
 
   # Pods for PhotoAlbums
 
-	pod ‘Alamofire’
-	pod 'AlamofireImage'
-
   target 'PhotoAlbumsTests' do
     inherit! :search_paths
     # Pods for testing

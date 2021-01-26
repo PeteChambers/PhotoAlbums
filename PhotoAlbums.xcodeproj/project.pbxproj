@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,8 @@
 		803F446D258A58710046C15C /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803F446C258A58710046C15C /* PhotoDetailViewController.swift */; };
 		803F448A258B6BCB0046C15C /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803F4489258B6BCB0046C15C /* SearchBarView.swift */; };
 		803F4490258B83AB0046C15C /* PhotoCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803F448F258B83AB0046C15C /* PhotoCountView.swift */; };
+		805CC0A625C08195002D98A3 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 805CC0A525C08195002D98A3 /* Alamofire */; };
+		805CC0AC25C081C9002D98A3 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 805CC0AB25C081C9002D98A3 /* AlamofireImage */; };
 		8066AAA9258D108800BEE595 /* Url+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8066AAA8258D108800BEE595 /* Url+Extensions.swift */; };
 		8066AAB9258D179000BEE595 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8066AAB8258D179000BEE595 /* UICollectionView+Extensions.swift */; };
 		8066AAC6258D190F00BEE595 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8066AAC5258D190F00BEE595 /* NSMutableAttributedString+Extensions.swift */; };
@@ -101,6 +103,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				299188701FD60FF2EB23C4A3 /* Pods_PhotoAlbums.framework in Frameworks */,
+				805CC0A625C08195002D98A3 /* Alamofire in Frameworks */,
+				805CC0AC25C081C9002D98A3 /* AlamofireImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,13 +319,16 @@
 				803F4398258A0F560046C15C /* Sources */,
 				803F4399258A0F560046C15C /* Frameworks */,
 				803F439A258A0F560046C15C /* Resources */,
-				A89A3A4A56C3D8AAECE22AD5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = PhotoAlbums;
+			packageProductDependencies = (
+				805CC0A525C08195002D98A3 /* Alamofire */,
+				805CC0AB25C081C9002D98A3 /* AlamofireImage */,
+			);
 			productName = PhotoAlbums;
 			productReference = 803F439C258A0F560046C15C /* PhotoAlbums.app */;
 			productType = "com.apple.product-type.application";
@@ -353,7 +360,6 @@
 				803F43BC258A0F590046C15C /* Sources */,
 				803F43BD258A0F590046C15C /* Frameworks */,
 				803F43BE258A0F590046C15C /* Resources */,
-				05B175C193C1791BAEB1BA6D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -396,6 +402,10 @@
 				Base,
 			);
 			mainGroup = 803F4393258A0F560046C15C;
+			packageReferences = (
+				805CC0A425C08195002D98A3 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				805CC0AA25C081C9002D98A3 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+			);
 			productRefGroup = 803F439D258A0F560046C15C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -435,23 +445,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		05B175C193C1791BAEB1BA6D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PhotoAlbums-PhotoAlbumsUITests/Pods-PhotoAlbums-PhotoAlbumsUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PhotoAlbums-PhotoAlbumsUITests/Pods-PhotoAlbums-PhotoAlbumsUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PhotoAlbums-PhotoAlbumsUITests/Pods-PhotoAlbums-PhotoAlbumsUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		7C6887BA7D8E0A6302828DCA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -494,23 +487,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A89A3A4A56C3D8AAECE22AD5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PhotoAlbums/Pods-PhotoAlbums-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PhotoAlbums/Pods-PhotoAlbums-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PhotoAlbums/Pods-PhotoAlbums-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CC4F1477CA04D651594487E2 /* [CP] Check Pods Manifest.lock */ = {
@@ -899,6 +875,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		805CC0A425C08195002D98A3 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.4.1;
+			};
+		};
+		805CC0AA25C081C9002D98A3 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		805CC0A525C08195002D98A3 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 805CC0A425C08195002D98A3 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		805CC0AB25C081C9002D98A3 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 805CC0AA25C081C9002D98A3 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 803F4394258A0F560046C15C /* Project object */;
 }
