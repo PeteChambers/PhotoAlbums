@@ -9,18 +9,30 @@ import XCTest
 @testable import PhotoAlbums
 
 class PhotoAlbumsTests: XCTestCase {
+    
+    private var sut: WebService!
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        sut = WebService()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        sut = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAPIResponse() throws {
+        let expectation = XCTestExpectation(description: "Alamofire")
+        sut?.getAlbums { (result) in
+            switch result {
+            case .success(let albums):
+                XCTAssertEqual(albums.count, 100)
+                expectation.fulfill()
+            case .failure(let error):
+                debugPrint("test failed with error: \(error)")
+            }
+        }
+        wait(for: [expectation], timeout: 5)
+    
     }
 
     func testPerformanceExample() throws {
