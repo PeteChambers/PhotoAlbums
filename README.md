@@ -2,20 +2,6 @@
 
 PhotoAlbums is a simple album list, photo list and photo detail application, using data from https://jsonplaceholder.typicode.com
 
-### Prerequisites
-
-##### CocoaPods
-
--  Make sure CocoaPods is installed.
-
-- [CocoaPods](https://github.com/CocoaPods/CocoaPods) - The application level dependency manager used.  Update your Podfile to include the following:
-
-`pod 'Alamofire'`
-
-`pod 'AlamofireImage'`
-
-- Run pod install.
-
 ### Running the app
 
 Open PhotoAlbums.xcodeproj with xcode. you can either install in an iOS device or running the project in the simulator.
