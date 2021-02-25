@@ -142,6 +142,7 @@ extension AlbumsCollectionViewController : AlbumListViewDelegate {
     func failure(message: String) {
         DispatchQueue.main.async {
             self.createAlert(title: "", message: message)
+            debugPrint("test")
         }
     }
 }
